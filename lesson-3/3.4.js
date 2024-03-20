@@ -15,7 +15,6 @@
 
 const cities = require('cities'); // US addresses only (미국 주소만 가능)
 
-var myCity;
 // 82901 = Rock Springs, WY
 // 90201 = Beverly Hills, CA
 // 33162 = Miami, FL

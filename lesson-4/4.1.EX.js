@@ -8,7 +8,7 @@
  */
 
 // 애플리케이션에서 사용할 포트 번호인 3000을 지정한다. (80번호는 HTTP, 443번호는 HTTPS)
-const port 3000;
+const port = 3000;
 
 // http라는 특정 Node.js 모듈을 가져와 상수로 저장한다.
 const http = require('http');
@@ -47,7 +47,7 @@ const app = http.createServer((req,res) => {
   let resMsg = "<h1>Hello, Everybody</h1>";
 
   // 바로 다음 줄에 write를 써서 HTML 형식의 출력문으로 응답을 시작하고 end를 써서 응답을 종료시킨다.
-  res.write();
+  res.write(resMsg);
 
   // 응답이 종료될 때에는 반드시 end를 사용해 더 이상 응답 출력은 없다고
   // 서버에 확인시켜 줘야 하며, 그렇지 않을 경우 서버는 커넥션을 끊지 않고
