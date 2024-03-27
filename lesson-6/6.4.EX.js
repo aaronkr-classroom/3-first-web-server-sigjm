@@ -1,27 +1,24 @@
 // listing6.4.js
 
-const { rmSync } = require('fs');
-
 /**
  * listing6.4.js
  * 프로젝트 내 main.js에서 각 파일별 특정 라우티를 가지는 웹 서거 구현
  */
-const port = 3000;
+const port = 3000,
   http = require('http'),
   httpStatus = require('http-status-codes'),
   fs = require('fs');
 
-
 const sendErrorResp = (res) => {
   // 에러 핸들링 함수 생성
-  res.writeHead(httpStatus.Not_FOUND, {
+  res.writeHead(httpStatus.NOT_FOUND, {
     "Content-Type": "text/html"
   });
-  res.write("<h1>404</h1><h2>File Not found</h2>");
-  res.end;
+  res.write("<h1>404</h1><h2>File not Found.</h2>");
+  res.end();
 };
 
-http
+const app = http
   .createServer((req, res) => {
     let url = req.url; // url 변수에 요청 URL 저장
 
@@ -32,51 +29,52 @@ http
       res.writeHead(httpStatus.OK, {
         "Content-Type": "text/html"
       });
-      customReadFile(`./views${url}`,res);
+      // req.url = "/sample.html"
+      customReadFile(`./views${url}`, res); 
     } else if (url.indexOf(".js") !== -1) {
-      res.writeHead(httpStatus.OK, {
+      res.writeHea(httpStatus.OK, {
         "Content-Type": "text/javascript"
       });
-      customReadFile(url,res);
-
+      customReadFile(`./public/js${url}`, res);
     } else if (url.indexOf(".css") !== -1) {
       res.writeHead(httpStatus.OK, {
         "Content-Type": "text/css"
       });
-      customReadFile(url,res);
-
+      customReadFile(`./public/css${url}`, res);
     } else if (url.indexOf(".png") !== -1) {
       res.writeHead(httpStatus.OK, {
         "Content-Type": "image/png"
       });
-      customReadFile(url,res);
-
+      customReadFile(`./public/img${url}`, res);
     } else {
       sendErrorResp(res);
     }
-  })
-  .listen();
+  });
 
-console.log();
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port);
+}
+
+console.log(`Server at: http://localhost:${port}`);
 
 // 이름으로 요청된 파일 찾기
 const customReadFile = (file_path, res) => {
   // 파일이 존재하는지 확인
-  if(fs.existSync(file_path)) {
+  if(fs.existsSync(file_path)) {
     fs.readFile(file_path, (error, data) => {
       if (error) {
         console.log(error);
-        sendErrorResp(res)
+        sendErrorResp(res);
       }
       res.write(data);
       res.end();
     });
-    else
+  } else {
+    sendErrorResp(res);
   }
 };
 
 /**
  * 이제 여러분의 애플리케이션은 존재하지 않는 파일에 대한 대응을 할 수 있게 됐다.
  */
-
 module.exports = app;
